@@ -66,7 +66,7 @@ public class Parser implements Runnable {
 	}
 	
 	public static void main(String[] args) throws Throwable {
-		Parser p = new Parser("wili-2018-Small-11750-Edited.txt", 1);
+		Parser p = new Parser("wili-2018-Small-11750-Edited.txt", 4);
 		
 		Database db = new Database();
 		p.setDb(db);
@@ -76,7 +76,7 @@ public class Parser implements Runnable {
 		
 		db.resize(300);
 		
-		String s  = "Nothing yet";
+		String s  = "Chuaigh me go dti an siopa mar is maith liom ispini ach thosaigh me ag rith go dti an oifig an phoist";
 		
 		p.analyseQuery(s);
 		
@@ -89,7 +89,7 @@ public class Parser implements Runnable {
 		CharSequence kmer;
 		int kmerH;
 		
-		Map<Integer, LanguageEntry> q = new TreeMap<Integer, LanguageEntry>();
+		Map<Integer, LanguageEntry> q = new HashMap<>();
 		
 		for (int i = 0; i <= s.length() - k; i+=3) {	
 			kmer = s.substring(i, i+k);
@@ -98,7 +98,12 @@ public class Parser implements Runnable {
 			if (q.containsKey(kmerH)) {
 				frequency += q.get(kmerH).getFrequency();
 			}
+			LanguageEntry lang = new LanguageEntry(kmerH, frequency);
+			q.put(frequency, lang);
 		}
+		
+		Language language = db.getLanguage(q);
+		System.out.println("appears to be written in " + language);
 		
 	}
 
