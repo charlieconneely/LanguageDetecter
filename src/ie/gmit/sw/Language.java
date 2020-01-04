@@ -243,7 +243,8 @@ public enum Language {
         this.language = language;
     }
 	
-    public CharSequence getLanguageName() {
+    public CharSequence getLanguageName(String lang) {
+    	
         return this.language;
     }
 

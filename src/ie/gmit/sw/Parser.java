@@ -5,36 +5,101 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 
-public class Parser {
+public class Parser implements Runnable {
 	
-	private BlockingQueue<LanguageEntry> q = null;
+	// private BlockingQueue<LanguageEntry> q = null;
+	private Database db = null;
+	private String file;
+	private int k;
 	
-	public Parser (BlockingQueue<LanguageEntry> q) {
-		this.q = q;
+//	public Parser (BlockingQueue<LanguageEntry> q) {
+//		this.q = q;
+//	}
+	
+	public Parser(String file, int k) {
+		this.file = file;
+		this.k = k;
 	}
 	
-	public void run () throws IOException {
+	public void setDb(Database db) {
+		this.db = db;
+	}
+	
+	@Override 
+	public void run () {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader
-				(new FileInputStream("./wili-2018-Small-11750-Edited")));
-		
-		String line = null;
-		
-		while ((line=br.readLine()) != null) {
-			String[] record = line.toUpperCase().trim().split("e");
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new InputStreamReader
+					(new FileInputStream(file)));
 			
-			processLine(record[0], record[1]);
+			String line = null;
+			
+			while ((line=br.readLine()) != null) {
+				String[] record = line.trim().split("@");
+				if(record.length != 2) continue;
+				parse(record[0], record[1]);
+			}
+			
+			br.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Map<String[], String> db = new TreeMap<String[], String>();
+
+	}
+	
+	public void parse(String text, String lang, int... ks) {
+		Language language = Language.valueOf(lang);
+		
+		for (int i = 0; i <= text.length() - k; i+=3) {
+			CharSequence kmer = text.substring(i, i + k);
+			db.add(kmer, language);
 		}
 	}
 	
-	public void processLine(String text, String lang) {
-		//Language l = Language.getLanguageName(lang);
+	public static void main(String[] args) throws Throwable {
+		Parser p = new Parser("wili-2018-Small-11750-Edited.txt", 1);
 		
-		for (int i = 0; i < text.length(); i+=3) {
-			//db.add(l.getKmer(), lang);
+		Database db = new Database();
+		p.setDb(db);
+		Thread t = new Thread(p);
+		t.start();
+		t.join();
+		
+		db.resize(300);
+		
+		String s  = "Nothing yet";
+		
+		p.analyseQuery(s);
+		
+	}
+	
+	public void analyseQuery(String s) 
+	{
+		
+		int frequency = 1;
+		CharSequence kmer;
+		int kmerH;
+		
+		Map<Integer, LanguageEntry> q = new TreeMap<Integer, LanguageEntry>();
+		
+		for (int i = 0; i <= s.length() - k; i+=3) {	
+			kmer = s.substring(i, i+k);
+			kmerH = kmer.hashCode();
+			
+			if (q.containsKey(kmerH)) {
+				frequency += q.get(kmerH).getFrequency();
+			}
 		}
+		
 	}
 
 }
