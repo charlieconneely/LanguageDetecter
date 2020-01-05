@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,7 +16,7 @@ public class Parser implements Runnable {
 	// private BlockingQueue<LanguageEntry> q = null;
 	private Database db = null;
 	private String file;
-	private int k;
+	private int k = 5;
 	
 //	public Parser (BlockingQueue<LanguageEntry> q) {
 //		this.q = q;
@@ -59,7 +60,7 @@ public class Parser implements Runnable {
 	public void parse(String text, String lang, int... ks) {
 		Language language = Language.valueOf(lang);
 		
-		for (int i = 0; i <= text.length() - k; i+=3) {
+		for (int i = 0; i <= text.length() - k; i+=2) {
 			CharSequence kmer = text.substring(i, i + k);
 			db.add(kmer, language);
 		}
@@ -76,35 +77,55 @@ public class Parser implements Runnable {
 		
 		db.resize(300);
 		
-		String s  = "Chuaigh me go dti an siopa mar is maith liom ispini ach thosaigh me ag rith go dti an oifig an phoist";
+		String queryFile  = "irish.txt";
 		
-		p.analyseQuery(s);
+		p.analyseQuery(queryFile);
 		
 	}
 	
-	public void analyseQuery(String s) 
+	public void analyseQuery(String f) throws IOException 
 	{
 		
 		int frequency = 1;
-		CharSequence kmer;
-		int kmerH;
+		String kmer = "";
+		int kmerH=0;
+
+		//Map<Integer, CharSequence> query = new HashMap<Integer, CharSequence>();
+		Map<Integer, LanguageEntry> q = new TreeMap<>();
 		
-		Map<Integer, LanguageEntry> q = new HashMap<>();
+		BufferedReader br1;
+		br1 = new BufferedReader(new InputStreamReader
+					(new FileInputStream(f)));
+		String line = null;
 		
-		for (int i = 0; i <= s.length() - k; i+=3) {	
-			kmer = s.substring(i, i+k);
-			kmerH = kmer.hashCode();
+		while ((line=br1.readLine())!=null) {	
+			
+			for (int i = 0; i <= line.length() - k; i+=2) {	
+				kmer = line.trim().substring(i, i+k);
+				kmerH = kmer.hashCode();
+				System.out.println(kmer + "\n");
+			}
 			
 			if (q.containsKey(kmerH)) {
 				frequency += q.get(kmerH).getFrequency();
 			}
 			LanguageEntry lang = new LanguageEntry(kmerH, frequency);
 			q.put(frequency, lang);
+			//query.put(frequency, kmer);
+			//System.out.println(Collections.singletonList(q));
 		}
 		
 		Language language = db.getLanguage(q);
-		System.out.println("appears to be written in " + language);
+		System.out.println("The language appears to be " + language);
+		br1.close();
 		
 	}
 
+	
+	public void compareToFile(Map<Integer, CharSequence> q) {
+		
+	}
+	
 }
+		
+
