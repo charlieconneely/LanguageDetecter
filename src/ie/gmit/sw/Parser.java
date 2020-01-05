@@ -67,19 +67,19 @@ public class Parser implements Runnable {
 	}
 	
 	public static void main(String[] args) throws Throwable {
-		Parser p = new Parser("wili-2018-Small-11750-Edited.txt", 4);
-		
-		Database db = new Database();
-		p.setDb(db);
-		Thread t = new Thread(p);
-		t.start();
-		t.join();
-		
-		db.resize(300);
-		
-		String queryFile  = "irish.txt";
-		
-		p.analyseQuery(queryFile);
+//		Parser p = new Parser("wili-2018-Small-11750-Edited.txt", 4);
+//		
+//		Database db = new Database();
+//		p.setDb(db);
+//		Thread t = new Thread(p);
+//		t.start();
+//		t.join();
+//		
+//		db.resize(300);
+//		
+//		String queryFile  = "irish.txt";
+//		
+//		p.analyseQuery(queryFile);
 		
 	}
 	
@@ -90,7 +90,6 @@ public class Parser implements Runnable {
 		String kmer = "";
 		int kmerH=0;
 
-		//Map<Integer, CharSequence> query = new HashMap<Integer, CharSequence>();
 		Map<Integer, LanguageEntry> q = new TreeMap<>();
 		
 		BufferedReader br1;
@@ -103,7 +102,6 @@ public class Parser implements Runnable {
 			for (int i = 0; i <= line.length() - k; i+=2) {	
 				kmer = line.trim().substring(i, i+k);
 				kmerH = kmer.hashCode();
-				System.out.println(kmer + "\n");
 			}
 			
 			if (q.containsKey(kmerH)) {
@@ -111,8 +109,6 @@ public class Parser implements Runnable {
 			}
 			LanguageEntry lang = new LanguageEntry(kmerH, frequency);
 			q.put(frequency, lang);
-			//query.put(frequency, kmer);
-			//System.out.println(Collections.singletonList(q));
 		}
 		
 		Language language = db.getLanguage(q);
@@ -120,12 +116,6 @@ public class Parser implements Runnable {
 		br1.close();
 		
 	}
-
-	
-	public void compareToFile(Map<Integer, CharSequence> q) {
-		
-	}
-	
 }
 		
 

@@ -1,42 +1,72 @@
 package ie.gmit.sw;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Runner {
+	
+	private static String wiliFileName;
+	private static String queryFileName;
+	
+	private static Scanner console = new Scanner(System.in);
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader
-				(new FileInputStream("./wili-2018-Small-11750-Edited.txt")));
+		displayHeader();
 		
-		Scanner s = new Scanner(new File("./wili-2018-Small-11750-Edited.txt"));
-		
-		Map<String[], String> db = new TreeMap<String[], String>();
-		
-		String line = null;
-		//int i = 0;
-		String lang = null;
-		while ((line=br.readLine()) != null) {
-			String[] record = line.toUpperCase().trim().split("@");	
-				
-			//db.put(record[0], record[1]);
-			//i++;
-		}
-		
-		System.out.println(db);
+		wiliFileName = getWiLIFileName();
+		System.out.println("Building subject database... please wait...");
+		Parser p = new Parser(wiliFileName, 4);
 
+		Database db = new Database();
+		p.setDb(db);
+		Thread t = new Thread(p);
+		t.start();
+		t.join();
+			
+		db.resize(300);
+		
+		String queryFileName  = getQueryFileName();
+		
+		p.analyseQuery(queryFileName);
 	}
 	
-	public static void processLine(String r, String l)
+	public static void displayHeader()
 	{
+		System.out.println("Charlie Conneely - G00348887");
+		System.out.println("------------------------------");
+	}
+	
+	public static String getWiLIFileName()
+	{
+		String inputFile;	
+		String file;
 		
+		do
+		{
+			System.out.println("Enter WiLI Data Location>");
+			inputFile = console.next();
+		} while(new File(inputFile).isFile() == false);
+	
+		file = inputFile;
+		
+		return file;
 	}
 
+	public static String getQueryFileName()
+	{
+		String inputFile;	
+		String file;
+		
+		do
+		{
+			System.out.println("Enter Query File Location>");
+			inputFile = console.next();
+		} while(new File(inputFile).isFile() == false);
+	
+		file = inputFile;
+		
+		return file;
+	}
 }
