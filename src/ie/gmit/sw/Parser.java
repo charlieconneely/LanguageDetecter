@@ -2,14 +2,10 @@ package ie.gmit.sw;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.BlockingQueue;
 
 public class Parser implements Runnable {
 	
@@ -17,10 +13,6 @@ public class Parser implements Runnable {
 	private Database db = null;
 	private String file;
 	private int k = 5;
-	
-//	public Parser (BlockingQueue<LanguageEntry> q) {
-//		this.q = q;
-//	}
 	
 	public Parser(String file, int k) {
 		this.file = file;
@@ -53,8 +45,6 @@ public class Parser implements Runnable {
 			e.printStackTrace();
 		}
 		
-		//Map<String[], String> db = new TreeMap<String[], String>();
-
 	}
 	
 	public void parse(String text, String lang, int... ks) {
@@ -64,23 +54,6 @@ public class Parser implements Runnable {
 			CharSequence kmer = text.substring(i, i + k);
 			db.add(kmer, language);
 		}
-	}
-	
-	public static void main(String[] args) throws Throwable {
-//		Parser p = new Parser("wili-2018-Small-11750-Edited.txt", 4);
-//		
-//		Database db = new Database();
-//		p.setDb(db);
-//		Thread t = new Thread(p);
-//		t.start();
-//		t.join();
-//		
-//		db.resize(300);
-//		
-//		String queryFile  = "irish.txt";
-//		
-//		p.analyseQuery(queryFile);
-		
 	}
 	
 	public void analyseQuery(String f) throws IOException 

@@ -27,7 +27,7 @@ public class Runner {
 			
 		db.resize(300);
 		
-		String queryFileName  = getQueryFileName();
+		queryFileName  = getQueryFileName();
 		
 		p.analyseQuery(queryFileName);
 	}
