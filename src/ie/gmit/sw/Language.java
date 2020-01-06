@@ -1,5 +1,15 @@
 package ie.gmit.sw;
 
+
+/**
+ * @author Charlie Conneely
+ * @version 1.0
+ * @since 1.8
+ * 
+ * Language is an enum created to relate each language
+ * to a String text of the language that includes the 
+ * space, making it more presentable to the user.
+*/
 public enum Language {
 	Achinese ("Achinese"),
 	Afrikaans ("Afrikaans"),
@@ -23,7 +33,7 @@ public enum Language {
 	Bavarian ("Bavarian"),
 	Belarusian ("Belarusian"),
 	BelarusianTaraschkewiza ("Belarusian Taraschkewiza"),
-	Bengali ("Bengali"),
+	Bengali ("Bengali"),	
 	Bhojpuri ("Bhojpuri"),
 	Bishnupriya ("Bishnupriya"),
 	Bokm ("Bokm"),

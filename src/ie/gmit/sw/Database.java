@@ -17,7 +17,6 @@ public class Database {
 		if (langDb.containsKey(kmer)) {
 			frequency += langDb.get(kmer).getFrequency();
 		}
-		//Map<Integer, LanguageEntry> m = new TreeMap<>();
 		
 		langDb.put(kmer, new LanguageEntry(kmer, frequency));
 		
@@ -112,27 +111,4 @@ public class Database {
 			return "[lang=" + lang + ", distance=" + getAbsoluteDistance() + "]";
 		}
 	}
-//	
-//	public String toString() {
-//		
-//		StringBuilder sb = new StringBuilder();
-//		
-//		int langCount = 0;
-//		int kmerCount = 0;
-//		Set<Language> keys = db.keySet();
-//		for (Language lang : keys) {
-//			langCount++;
-//			sb.append(lang.name() + "->\n");
-//			 
-//			 Collection<LanguageEntry> m = new TreeSet<>(db.get(lang).values());
-//			 kmerCount += m.size();
-//			 for (LanguageEntry le : m) {
-//				 sb.append("\t" + le + "\n");
-//			 }
-//		}
-//		sb.append(kmerCount + " total k-mers in " + langCount + " languages"); 
-//		return sb.toString();
-//	}
-
-
 }

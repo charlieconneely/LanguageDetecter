@@ -40,32 +40,28 @@ public class Runner {
 	
 	public static String getWiLIFileName()
 	{
-		String inputFile;	
 		String file;
 		
 		do
 		{
 			System.out.println("Enter WiLI Data Location>");
-			inputFile = console.next();
-		} while(new File(inputFile).isFile() == false);
-	
-		file = inputFile;
+			
+			file = console.next();			
+		} while(new File(file).isFile() == false);
 		
 		return file;
 	}
 
 	public static String getQueryFileName()
-	{
-		String inputFile;	
+	{	
 		String file;
 		
 		do
 		{
 			System.out.println("Enter Query File Location>");
-			inputFile = console.next();
-		} while(new File(inputFile).isFile() == false);
-	
-		file = inputFile;
+			
+			file = console.next();			
+		} while(new File(file).isFile() == false);
 		
 		return file;
 	}
